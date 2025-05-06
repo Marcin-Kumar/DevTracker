@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\" />
+    <Folder Include="Adapter\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="OutboundPorts\IProjectRepository.cs" />
+  </ItemGroup>
+
 </Project>

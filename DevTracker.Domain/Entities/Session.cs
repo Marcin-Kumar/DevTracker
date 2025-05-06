@@ -1,4 +1,4 @@
-﻿namespace DevTracker.Domain;
+﻿namespace DevTracker.Domain.Entities;
 
 public class Session
 {
