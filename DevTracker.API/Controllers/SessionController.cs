@@ -26,13 +26,13 @@ public class SessionsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateSession(Session session)
+    public IActionResult CreateSession(SessionEntity session)
     {
         return CreatedAtAction(nameof(GetSessionById), new { id = 1 }, session);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateSession(int id, Session session)
+    public IActionResult UpdateSession(int id, SessionEntity session)
     {
         return NoContent();
     }

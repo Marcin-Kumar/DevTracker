@@ -20,13 +20,13 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateProject(Project project)
+    public IActionResult CreateProject(ProjectEntity project)
     {
         return CreatedAtAction(nameof(GetProjectById), new { id = 1 }, project);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateProject(int id, Project project)
+    public IActionResult UpdateProject(int id, ProjectEntity project)
     {
         return NoContent();
     }

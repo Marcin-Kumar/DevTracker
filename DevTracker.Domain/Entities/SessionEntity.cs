@@ -2,9 +2,9 @@
 
 namespace DevTracker.Domain.Entities;
 
-public class Session
+public class SessionEntity
 {
-    public Session(string notes, DateTime startedAtDateTime, SessionType sessionType)
+    public SessionEntity(string notes, DateTime startedAtDateTime, SessionType sessionType)
     {
         Notes = notes;
         StartedAtDateTime = startedAtDateTime;
