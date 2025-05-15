@@ -2,7 +2,7 @@
 
 namespace DevTracker.Data.Models;
 
-internal class Goal
+public class Goal
 {
     public DateTime AchieveBy { get; set; }
     public List<Session> CodingSessions { get; set; }

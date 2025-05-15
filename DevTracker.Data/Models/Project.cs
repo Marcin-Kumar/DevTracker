@@ -1,5 +1,5 @@
 ﻿namespace DevTracker.Data.Models;
-internal class Project
+public class Project
 {
     public List<Session> CodingSessions { get; set; }
     public string Description { get; set; }

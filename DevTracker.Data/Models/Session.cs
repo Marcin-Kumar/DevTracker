@@ -1,7 +1,7 @@
 ﻿using DevTracker.Domain.Entities.Enums;
 
 namespace DevTracker.Data.Models;
-internal class Session
+public class Session
 {
     public SessionType SessionType { get; set; }
     public int Id { get; set; }

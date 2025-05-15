@@ -1,3 +1,6 @@
+using DevTracker.Data.Context;
+using DevTracker.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 internal class Program
@@ -5,10 +8,10 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddDbContext<DevTrackerContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
         var app = builder.Build();
-
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
