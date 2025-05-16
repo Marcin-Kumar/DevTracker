@@ -1,9 +1,8 @@
-﻿using System;
-namespace DevTracker.Domain.Entities.Enums;
+﻿namespace DevTracker.Domain.Entities.Enums;
 
 public enum SessionType
 {
     None,
     Coding,
-    Theory,
+    Theory
 }

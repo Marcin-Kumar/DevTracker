@@ -8,6 +8,8 @@ internal class SessionConfiguration : IEntityTypeConfiguration<Session>
     public void Configure(EntityTypeBuilder<Session> builder)
     {
         builder.HasKey(s => s.Id);
+        builder.Property(s => s.Title).HasMaxLength(100);
+
         builder.HasOne(s => s.GoalCodingSession)
             .WithMany(g => g.CodingSessions)
             .HasForeignKey(s => s.GoalCodingSessionId)
