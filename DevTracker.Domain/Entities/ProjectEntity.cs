@@ -2,9 +2,10 @@
 
 public class ProjectEntity
 {
-    public List<SessionEntity> CodingSessions { get; init; } = new();
-    public string Description { get; set; } = string.Empty;
-    public Guid Id { get; set; }
+    public int? Id { get; set; }
     public required string Title { get; set; }
-    public List<SessionEntity> TheorySessions { get; init; } = new();
+    public string? Description { get; set; }
+    public Status CurrentStatus { get; set; }
+    public List<SessionEntity>? CodingSessions { get; init; }
+    public List<SessionEntity>? TheorySessions { get; init; }
 }
