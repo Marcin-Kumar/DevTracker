@@ -1,33 +1,44 @@
 ﻿using DevTracker.Data.Context;
+using DevTracker.Data.Mappers;
+using DevTracker.Data.Models;
 using DevTracker.Domain.Entities;
 using DevTracker.Domain.Ports;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevTracker.Data.Adapters;
 
 public class GoalRepository : IGoalRepository
 {
     private readonly DevTrackerContext _context;
-    public GoalRepository(DevTrackerContext context)
+    private readonly GoalMapper _goalMapper;
+    public GoalRepository(DevTrackerContext context, GoalMapper goalMapper)
     {
         _context = context;
+        _goalMapper = goalMapper;
     }
-    public void CreateGoal(GoalEntity goal)
+    public async Task CreateGoal(GoalEntity goal)
     {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateGoal(GoalEntity goal)
-    {
-        throw new NotImplementedException();
+        Goal goalModel = _goalMapper.ToModel(goal);
+        await _context.Goals.AddAsync(goalModel);
+        await _context.SaveChangesAsync();
     }
 
-    public void DeleteGoal(int id)
+    public async Task UpdateGoal(GoalEntity goal)
     {
-        throw new NotImplementedException();
+        Goal goalModel = _goalMapper.ToModel(goal);
+        _context.Goals.Update(goalModel);
+        await _context.SaveChangesAsync();
     }
 
-    public void ReadAllGoals()
+    public async Task DeleteGoal(int id)
     {
-        throw new NotImplementedException();
+        _context.Goals.Remove(new Goal { Id = id});
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<GoalEntity>> ReadAllGoals()
+    {
+        List<Goal> goals = await _context.Goals.ToListAsync();
+        return goals.Select(_goalMapper.ToEntity).ToList();
     }
 }

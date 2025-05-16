@@ -2,7 +2,7 @@
 using DevTracker.Domain.Entities;
 
 namespace DevTracker.Data.Mappers;
-internal class GoalMapper
+public class GoalMapper
 {
     private readonly ProjectMapper _internalProjectMapper;
     private readonly SessionMapper _internalSessionMapper;
