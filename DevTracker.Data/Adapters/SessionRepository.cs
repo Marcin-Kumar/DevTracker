@@ -2,6 +2,7 @@
 using DevTracker.Data.Mappers;
 using DevTracker.Data.Models;
 using DevTracker.Domain.Entities;
+using DevTracker.Domain.Entities.Enums;
 using DevTracker.Domain.Ports;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,9 +30,21 @@ public class SessionRepository : ISessionRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<SessionEntity>> ReadAllCodingSessions()
+    {
+        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Coding).ToListAsync();
+        return sessionModels.Select(_sessionMapper.ToEntity).ToList();
+    }
+
     public async Task<List<SessionEntity>> ReadAllSessions()
     {
         List<Session> sessionModels = await _context.Sessions.ToListAsync();
+        return sessionModels.Select(_sessionMapper.ToEntity).ToList(); ;
+    }
+
+    public async Task<List<SessionEntity>> ReadAllTheorySessions()
+    {
+        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Theory).ToListAsync();
         return sessionModels.Select(_sessionMapper.ToEntity).ToList();
     }
 

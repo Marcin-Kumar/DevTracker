@@ -3,9 +3,9 @@
 namespace DevTracker.Domain.InboundPorts;
 public interface IGoalService
 {
-    public abstract List<GoalEntity> GetAllGoals();
-    public abstract GoalEntity GetGoalById();
-    public abstract void CreateGoal();
-    public abstract void DeleteGoal();
-    public abstract void UpdateGoal();
+    public abstract Task<List<GoalEntity>> ReadAllGoals();
+    public abstract Task<GoalEntity> ReadGoalById(int id);
+    public abstract Task CreateGoal(GoalEntity goalEntity);
+    public abstract Task DeleteGoal(int id);
+    public abstract Task UpdateGoal(GoalEntity goalEntity);
 }

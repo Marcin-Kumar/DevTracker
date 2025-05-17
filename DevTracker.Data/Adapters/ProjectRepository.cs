@@ -33,8 +33,19 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<List<ProjectEntity>> ReadAllProjects()
     {
-        List<Project> projectModels = await _context.Projects.ToListAsync();
+        List<Project> projectModels = await _context.Projects.AsNoTracking().ToListAsync();
         return projectModels.Select(_internalProjectMapper.ToEntity).ToList();
+    }
+
+    public async Task<ProjectEntity> ReadProject(int id)
+    {
+        Project project = await _context.Projects
+                                    .Include(p => p.CodingSessions)
+                                    .Include(p => p.TheorySessions)
+                                    .AsNoTracking()
+                                    .Where(p => p.Id == id)
+                                    .SingleOrDefaultAsync();
+        return _internalProjectMapper.ToEntity(project);
     }
 
     public async Task UpdateProject(ProjectEntity project)

@@ -7,4 +7,5 @@ public interface IGoalRepository
     public abstract Task UpdateGoal(GoalEntity goal);
     public abstract Task DeleteGoal(int id);
     public abstract Task<List<GoalEntity>> ReadAllGoals();
+    public abstract Task<GoalEntity> ReadGoalById(int id);
 }

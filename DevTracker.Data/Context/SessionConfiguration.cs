@@ -9,6 +9,8 @@ internal class SessionConfiguration : IEntityTypeConfiguration<Session>
     {
         builder.HasKey(s => s.Id);
         builder.Property(s => s.Title).HasMaxLength(100);
+        builder.Property(s => s.Type).HasConversion<string>()
+                                     .HasMaxLength(20);
 
         builder.HasOne(s => s.GoalCodingSession)
             .WithMany(g => g.CodingSessions)

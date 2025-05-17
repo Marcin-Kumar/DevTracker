@@ -7,4 +7,5 @@ public interface IProjectRepository
     public abstract Task UpdateProject(ProjectEntity project);
     public abstract Task DeleteProject(int id);
     public abstract Task<List<ProjectEntity>> ReadAllProjects();
+    public abstract Task<ProjectEntity> ReadProject(int id);
 }

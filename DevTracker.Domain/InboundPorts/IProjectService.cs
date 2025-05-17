@@ -1,11 +1,11 @@
 ﻿using DevTracker.Domain.Entities;
 
 namespace DevTracker.Domain.InboundPorts;
-internal interface IProjectService
+public interface IProjectService
 {
-    public abstract List<ProjectEntity> GetAllProjects();
-    public abstract ProjectEntity GetProjectById();
-    public abstract void CreateProject();
-    public abstract void DeleteProject();
-    public abstract void UpdateProject();
+    public abstract Task<List<ProjectEntity>> ReadAllProjects();
+    public abstract Task<ProjectEntity> ReadProjectById(int id);
+    public abstract Task CreateProject(ProjectEntity projectEntity);
+    public abstract Task DeleteProject(int id);
+    public abstract Task UpdateProject(ProjectEntity projectEntity);
 }

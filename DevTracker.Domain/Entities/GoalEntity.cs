@@ -1,4 +1,6 @@
-﻿namespace DevTracker.Domain.Entities;
+﻿using DevTracker.Domain.Entities.Enums;
+
+namespace DevTracker.Domain.Entities;
 
 public class GoalEntity
 {
@@ -13,4 +15,18 @@ public class GoalEntity
     public TimeSpan DailyTargetHours { get; set; }
     public List<SessionEntity>? CodingSessions { get; set; }
     public List<SessionEntity>? TheorySessions { get; set; }
+
+    public void AddSession(SessionEntity session)
+    {
+        if (session.Type == SessionType.Coding)
+        {
+            CodingSessions ??= new List<SessionEntity>();
+            CodingSessions.Add(session);
+        }
+        else if (session.Type == SessionType.Theory)
+        {
+            TheorySessions ??= new List<SessionEntity>();
+            TheorySessions.Add(session);
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace DevTracker.Domain.Entities;
 public class SessionEntity
 {
     public int? Id { get; init; }
+    public SessionType Type { get; set; }
     public string? Notes { get; set; }
     public required string Title { get; set; }
     public required DateTime StartedAtDateTime { get; set; }

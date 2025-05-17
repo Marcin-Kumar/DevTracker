@@ -38,7 +38,17 @@ public class GoalRepository : IGoalRepository
 
     public async Task<List<GoalEntity>> ReadAllGoals()
     {
-        List<Goal> goals = await _context.Goals.ToListAsync();
+        List<Goal> goals = await _context.Goals.AsNoTracking().ToListAsync();
         return goals.Select(_goalMapper.ToEntity).ToList();
+    }
+    public async Task<GoalEntity> ReadGoalById(int id)
+    {
+        Goal goalModel = await _context.Goals
+                                    .Include(g => g.Projects)
+                                    .Include(g => g.CodingSessions)
+                                    .Include(g => g.TheorySessions)
+                                    .Where(g => g.Id == id)
+                                    .SingleOrDefaultAsync(); 
+        return _goalMapper.ToEntity(goalModel); 
     }
 }

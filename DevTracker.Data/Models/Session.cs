@@ -1,9 +1,12 @@
-﻿namespace DevTracker.Data.Models;
+﻿using DevTracker.Domain.Entities.Enums;
+
+namespace DevTracker.Data.Models;
 public class Session
 {
     public int Id { get; set; }
     public string? Notes { get; set; }
     public string Title { get; set; }
+    public SessionType Type { get; set; }
     public DateTime StartedAtDateTime { get; set; }
     public DateTime? EndedAtDateTime { get; set; }
     public int? GoalCodingSessionId { get; set; }
