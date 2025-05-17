@@ -3,8 +3,8 @@
 namespace DevTracker.Domain.Ports;
 public interface IProjectRepository
 {
-    public abstract void CreateProject(ProjectEntity project);
-    public abstract void UpdateProject(ProjectEntity project);
-    public abstract void DeleteProject(ProjectEntity id);
-    public abstract void ReadAllProjects();
+    public abstract Task CreateProject(ProjectEntity project);
+    public abstract Task UpdateProject(ProjectEntity project);
+    public abstract Task DeleteProject(int id);
+    public abstract Task<List<ProjectEntity>> ReadAllProjects();
 }

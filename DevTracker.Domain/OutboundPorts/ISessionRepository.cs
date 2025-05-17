@@ -3,8 +3,8 @@
 namespace DevTracker.Domain.Ports;
 public interface ISessionRepository
 {
-    public abstract void CreateSession(SessionEntity session);
-    public abstract void UpdateSession(SessionEntity session);
-    public abstract void DeleteSession(SessionEntity id);
-    public abstract void ReadAllSessions();
+    public abstract Task CreateSession(SessionEntity session);
+    public abstract Task UpdateSession(SessionEntity session);
+    public abstract Task DeleteSession(int id);
+    public abstract Task<List<SessionEntity>> ReadAllSessions();
 }
