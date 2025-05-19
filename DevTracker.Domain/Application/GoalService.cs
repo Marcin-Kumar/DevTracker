@@ -12,9 +12,9 @@ internal class GoalService : IGoalService
         _goalRepository = goalRepository;
     }
 
-    public async Task CreateGoal(GoalEntity goalEntity)
+    public async Task<GoalEntity> CreateGoal(GoalEntity goalEntity)
     {
-        await _goalRepository.CreateGoal(goalEntity);
+        return await _goalRepository.CreateGoal(goalEntity);
     }
 
     public async Task DeleteGoal(int id)

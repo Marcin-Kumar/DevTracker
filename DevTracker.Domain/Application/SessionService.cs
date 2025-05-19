@@ -16,18 +16,18 @@ public class SessionService : ISessionService
         _projectRepository = projectRepository;
     }
 
-    public async Task CreateSessionForGoalWithId(int goalId, SessionEntity session)
+    public async Task<SessionEntity> CreateSessionForGoalWithId(int goalId, SessionEntity session)
     {
         GoalEntity goal = await _goalRepository.ReadGoalById(goalId);
         goal.AddSession(session);
-        await _goalRepository.UpdateGoal(goal);
+        return await _sessionRepository.CreateSession(session);
     }
 
-    public async Task CreateSessionForProjectWithId(int projectId, SessionEntity session)
+    public async Task<SessionEntity> CreateSessionForProjectWithId(int projectId, SessionEntity session)
     {
         ProjectEntity project = await _projectRepository.ReadProject(projectId);
         project.AddSession(session);
-        await _projectRepository.UpdateProject(project);
+        return await _sessionRepository.CreateSession(session);
     }
 
 
@@ -39,6 +39,11 @@ public class SessionService : ISessionService
     public async Task<List<SessionEntity>> ReadAllSessions()
     {
         return await _sessionRepository.ReadAllSessions();
+    }
+
+    public async Task<SessionEntity> ReadSessionWithId(int id)
+    {
+        return await _sessionRepository.ReadSessionWithId(id);
     }
 
     public async Task<List<SessionEntity>> ReadAllCodingSessions()

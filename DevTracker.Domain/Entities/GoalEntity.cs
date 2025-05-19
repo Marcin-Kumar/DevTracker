@@ -10,13 +10,13 @@ public class GoalEntity
     public required DateTime CreatedAt { get; init; }
     public required DateTime AchieveBy { get; init; }
     public string? Notes { get; set; }
-    public List<ProjectEntity>? Projects { get; init; }
     public Status CurrentStatus { get; set; } = Status.Planned;
     public TimeSpan DailyTargetHours { get; set; }
+    public List<ProjectEntity>? Projects { get; init; }
     public List<SessionEntity>? CodingSessions { get; set; }
     public List<SessionEntity>? TheorySessions { get; set; }
 
-    public void AddSession(SessionEntity session)
+    internal void AddSession(SessionEntity session)
     {
         if (session.Type == SessionType.Coding)
         {

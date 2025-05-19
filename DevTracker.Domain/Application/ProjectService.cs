@@ -11,9 +11,14 @@ internal class ProjectService : IProjectService
         _projectRepository = projectRepository;
     }
 
-    public async Task CreateProject(ProjectEntity projectEntity)
+    public async Task<ProjectEntity> CreateProject(ProjectEntity projectEntity)
     {
-        await _projectRepository.CreateProject(projectEntity);
+        return await _projectRepository.CreateProject(projectEntity);
+    }
+
+    public async Task<ProjectEntity> CreateProjectForGoalWithId(int goalId, ProjectEntity projectEntity)
+    {
+        return await _projectRepository.CreateProjectForGoalWithId(goalId, projectEntity);
     }
 
     public async Task DeleteProject(int id)

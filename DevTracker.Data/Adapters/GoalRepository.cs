@@ -16,11 +16,12 @@ public class GoalRepository : IGoalRepository
         _context = context;
         _goalMapper = goalMapper;
     }
-    public async Task CreateGoal(GoalEntity goal)
+    public async Task<GoalEntity> CreateGoal(GoalEntity goal)
     {
         Goal goalModel = _goalMapper.ToModel(goal);
         await _context.Goals.AddAsync(goalModel);
         await _context.SaveChangesAsync();
+        return _goalMapper.ToEntity(goalModel);
     }
 
     public async Task UpdateGoal(GoalEntity goal)

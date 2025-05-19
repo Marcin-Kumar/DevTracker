@@ -18,11 +18,21 @@ public class ProjectRepository : IProjectRepository
         _context = context;
     }
 
-    public async Task CreateProject(ProjectEntity project)
+    public async Task<ProjectEntity> CreateProject(ProjectEntity project)
     {
         Project projectModel = _internalProjectMapper.ToModel(project);
         await _context.Projects.AddAsync(projectModel);
         await _context.SaveChangesAsync();
+        return _internalProjectMapper.ToEntity(projectModel);
+    }
+
+    public async Task<ProjectEntity> CreateProjectForGoalWithId(int goalId, ProjectEntity project)
+    {
+        Project projectModel = _internalProjectMapper.ToModel(project);
+        projectModel.GoalId = goalId;
+        await _context.Projects.AddAsync(projectModel);
+        await _context.SaveChangesAsync();
+        return _internalProjectMapper.ToEntity(projectModel);
     }
 
     public async Task DeleteProject(int id)
