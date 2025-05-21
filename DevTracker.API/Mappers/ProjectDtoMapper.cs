@@ -3,29 +3,29 @@ using DevTracker.Domain.Entities;
 
 namespace DevTracker.API.Mappers;
 
-public class ProjectMapper
+public class ProjectDtoMapper
 {
-    private readonly SessionMapper _sessionSummaryMapper;
+    private readonly SessionDtoMapper _sessionMapper;
 
-    public ProjectMapper(SessionMapper sessionSummaryMapper)
+    public ProjectDtoMapper(SessionDtoMapper sessionMapper)
     {
-        _sessionSummaryMapper = sessionSummaryMapper;
+        _sessionMapper = sessionMapper;
     }
 
     internal GetProjectDto ToGetProjectDto(ProjectEntity p) => new GetProjectDto
-    {
-        summary = ToGetProjectSummaryDto(p),
-        CodingSessions = p.CodingSessions?.Select(_sessionSummaryMapper.ToGetSessionDto).ToList() ?? [],
-        TheorySessions = p.TheorySessions?.Select(_sessionSummaryMapper.ToGetSessionDto).ToList() ?? [],
-    };
+    (
+        summary: ToGetProjectSummaryDto(p),
+        CodingSessions: p.CodingSessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? [],
+        TheorySessions: p.TheorySessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? []
+    );
 
     internal GetProjectSummaryDto ToGetProjectSummaryDto(ProjectEntity p) => new GetProjectSummaryDto
-    {
-        Id = (int)p.Id!,
-        Title = p.Title,
-        Description = p.Description,
-        CurrentStatus = p.CurrentStatus.ToString(),
-    };
+    (
+        Id: (int)p.Id!,
+        Title: p.Title,
+        Description: p.Description,
+        CurrentStatus: p.CurrentStatus.ToString()
+    );
 
     internal ProjectEntity toEntity(CreateProjectDto p)
     {

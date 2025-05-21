@@ -13,12 +13,34 @@ using System.Threading.Tasks;
 public class SessionsController : ControllerBase
 {
     private readonly ISessionService _sessionService;
-    private readonly SessionMapper _sessionMapper;
+    private readonly SessionDtoMapper _sessionMapper;
 
-    public SessionsController(ISessionService sessionService, SessionMapper sessionMapper)
+    public SessionsController(ISessionService sessionService, SessionDtoMapper sessionMapper)
     {
         _sessionService = sessionService;
         _sessionMapper = sessionMapper;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateSession([FromBody] CreateSessionDto session)
+    {
+        SessionEntity sessionEntity = _sessionMapper.ToEntity(session);
+
+        if ((session.GoalId == null && session.ProjectId == null) || (session.GoalId != null && session.ProjectId != null))
+        {
+            return BadRequest("Provide the correct GoalId or ProjectId.");
+        }
+        if (session.GoalId != null)
+        {
+            sessionEntity = await _sessionService.CreateSessionForGoalWithId((int)session.GoalId, sessionEntity);
+        }
+        else if (session.ProjectId != null)
+        {
+            sessionEntity = await _sessionService.CreateSessionForProjectWithId((int)session.ProjectId, sessionEntity);
+        }
+
+        GetSessionDto responseDto = _sessionMapper.ToGetSessionDto(sessionEntity);
+        return CreatedAtAction(nameof(ReadSessionById), new { id = responseDto.Id }, responseDto);
     }
 
     [HttpGet]
@@ -53,28 +75,6 @@ public class SessionsController : ControllerBase
     {
         SessionEntity session = await _sessionService.ReadSessionWithId(id);
         return Ok(_sessionMapper.ToGetSessionDto(session));
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateSession([FromBody] CreateSessionDto session)
-    {
-        SessionEntity sessionEntity = _sessionMapper.ToEntity(session);
-
-        if ((session.GoalId == null && session.ProjectId == null) || (session.GoalId != null && session.ProjectId != null))
-        {
-            return BadRequest("Provide the correct GoalId or ProjectId.");
-        }
-        if (session.GoalId != null)
-        {
-            sessionEntity = await _sessionService.CreateSessionForGoalWithId((int)session.GoalId, sessionEntity);
-        }
-        else if (session.ProjectId != null)
-        {
-            sessionEntity = await _sessionService.CreateSessionForProjectWithId((int)session.ProjectId, sessionEntity);
-        }
-
-        GetSessionDto responseDto = _sessionMapper.ToGetSessionDto(sessionEntity);
-        return CreatedAtAction(nameof(ReadSessionById), new { id = responseDto.Id }, responseDto);
     }
 
     [HttpPut("{id}")]

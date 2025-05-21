@@ -4,18 +4,18 @@ using DevTracker.Domain.Entities.Enums;
 
 namespace DevTracker.API.Mappers;
 
-public class SessionMapper
+public class SessionDtoMapper
 {
     internal GetSessionDto ToGetSessionDto(SessionEntity s)
     {
-        return new GetSessionDto { 
-            Id = (int)s.Id!, 
-            Type = s.Type.ToString(), 
-            Notes = s.Notes, 
-            Title = s.Title,
-            StartedAtDateTime = s.StartedAtDateTime,
-            EndedAtDateTime = s.EndedAtDateTime 
-        };
+        return new GetSessionDto (
+            Id: (int)s.Id!, 
+            Type: s.Type.ToString(), 
+            Notes: s.Notes, 
+            Title: s.Title,
+            StartedAtDateTime: s.StartedAtDateTime,
+            EndedAtDateTime: s.EndedAtDateTime
+        );
     }
 
     internal SessionEntity ToEntity(CreateSessionDto s)

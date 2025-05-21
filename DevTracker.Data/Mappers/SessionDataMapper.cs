@@ -3,7 +3,7 @@ using DevTracker.Domain.Entities;
 
 namespace DevTracker.Data.Mappers;
 
-public class SessionMapper
+public class SessionDataMapper
 {
     internal Session ToModel(SessionEntity s)
     {

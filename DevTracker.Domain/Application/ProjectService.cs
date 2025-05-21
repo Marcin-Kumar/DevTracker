@@ -3,7 +3,7 @@ using DevTracker.Domain.InboundPorts;
 using DevTracker.Domain.Ports;
 
 namespace DevTracker.Domain.Application;
-internal class ProjectService : IProjectService
+public class ProjectService : IProjectService
 {
     private readonly IProjectRepository _projectRepository;
     public ProjectService(IProjectRepository projectRepository)

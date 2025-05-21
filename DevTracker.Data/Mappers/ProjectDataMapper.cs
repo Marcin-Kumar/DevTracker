@@ -3,11 +3,11 @@ using DevTracker.Domain.Entities;
 
 namespace DevTracker.Data.Mappers;
 
-public class ProjectMapper
+public class ProjectDataMapper
 {
-    private readonly SessionMapper _sessionMapper;
+    private readonly SessionDataMapper _sessionMapper;
 
-    public ProjectMapper(SessionMapper sessionMapper)
+    public ProjectDataMapper(SessionDataMapper sessionMapper)
     {
         _sessionMapper = sessionMapper;
     }

@@ -8,15 +8,24 @@ namespace DevTracker.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GoalController : ControllerBase
+public class GoalsController : ControllerBase
 {
     private readonly IGoalService _goalService;
-    private readonly GoalMapper _goalMapper;
+    private readonly GoalDtoMapper _goalMapper;
 
-    public GoalController(IGoalService goalService, GoalMapper goalMapper)
+    public GoalsController(IGoalService goalService, GoalDtoMapper goalMapper)
     {
         _goalService = goalService;
         _goalMapper = goalMapper;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateGoal([FromBody] CreateGoalDto goal)
+    {
+        GoalEntity goalEntity = _goalMapper.toEntity(goal);
+        goalEntity = await _goalService.CreateGoal(goalEntity);
+        GetGoalSummaryDto goalResponseDto = _goalMapper.ToGetGoalSummaryDto(goalEntity);
+        return CreatedAtAction(nameof(ReadGoalById), new { id = goalResponseDto.Id }, goalResponseDto);
     }
 
     [HttpGet]
@@ -31,15 +40,6 @@ public class GoalController : ControllerBase
     {
         GoalEntity goalEntity = await _goalService.ReadGoalById(id);
         return Ok(_goalMapper.ToGetGoalDto(goalEntity)); 
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateGoal([FromBody] CreateGoalDto goal)
-    {
-        GoalEntity goalEntity = _goalMapper.toEntity(goal);  
-        goalEntity = await _goalService.CreateGoal(goalEntity);
-        GetGoalSummaryDto goalResponseDto = _goalMapper.ToGetGoalSummaryDto(goalEntity);
-        return CreatedAtAction(nameof(ReadGoalById), new { id = goalResponseDto.Id }, goalResponseDto);
     }
 
     [HttpPut("{id}")]

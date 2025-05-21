@@ -3,40 +3,41 @@ using DevTracker.Domain.Entities;
 
 namespace DevTracker.API.Mappers;
 
-public class GoalMapper
+public class GoalDtoMapper
 {
-    private readonly ProjectMapper _projectMapper;
-    private readonly SessionMapper _sessionSummaryMapper;
+    private readonly ProjectDtoMapper _projectMapper;
+    private readonly SessionDtoMapper _sessionMapper;
 
-    internal GoalMapper(ProjectMapper projectMapper, SessionMapper sessionSummaryMapper)
+    public GoalDtoMapper(ProjectDtoMapper projectMapper, SessionDtoMapper sessionMapper)
     {
         _projectMapper = projectMapper;
-        _sessionSummaryMapper = sessionSummaryMapper;
+        _sessionMapper = sessionMapper;
     }
 
     internal GetGoalDto ToGetGoalDto(GoalEntity g) => new GetGoalDto
-    {
-        summary = ToGetGoalSummaryDto(g),
-        Projects = g.Projects?.Select(_projectMapper.ToGetProjectDto).ToList() ?? [],
-        CodingSessions = g.CodingSessions?.Select(_sessionSummaryMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>(),
-        TheorySessions = g.TheorySessions?.Select(_sessionSummaryMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>(),
-    };
+    (
+        summary: ToGetGoalSummaryDto(g),
+        Projects: g.Projects?.Select(_projectMapper.ToGetProjectDto).ToList() ?? [],
+        CodingSessions: g.CodingSessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>(),
+        TheorySessions: g.TheorySessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>()
+    );
 
     internal GetGoalSummaryDto ToGetGoalSummaryDto(GoalEntity g) => new GetGoalSummaryDto
-    {
-        Id = (int)g.Id!,
-        Title = g.Title,
-        Description = g.Description,
-        AchieveBy = g.AchieveBy,
-        CreatedAt = g.CreatedAt,
-        CurrentStatus = g.CurrentStatus.ToString(),
-        DailyTargetHours = g.DailyTargetHours,
-        Notes = g.Notes,
-    };
+    (
+        Id: (int)g.Id!,
+        Title: g.Title,
+        Description: g.Description,
+        AchieveBy: g.AchieveBy,
+        CreatedAt: g.CreatedAt,
+        CurrentStatus: g.CurrentStatus.ToString(),
+        DailyTargetHours: g.DailyTargetHours,
+        Notes: g.Notes
+    );
 
 
     internal GoalEntity toEntity(CreateGoalDto g)
     {
+
         Status status;
         Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out status);
         return new GoalEntity

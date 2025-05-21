@@ -9,15 +9,32 @@ using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProjectController : ControllerBase
+public class ProjectsController : ControllerBase
 {
     private readonly IProjectService _projectService;
-    private readonly ProjectMapper _projectSummaryMapper;
+    private readonly ProjectDtoMapper _projectSummaryMapper;
 
-    public ProjectController(IProjectService projectService, ProjectMapper projectSummaryMapper)
+    public ProjectsController(IProjectService projectService, ProjectDtoMapper projectSummaryMapper)
     {
         _projectService = projectService;
         _projectSummaryMapper = projectSummaryMapper;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto project)
+    {
+        ProjectEntity projectEntity = _projectSummaryMapper.toEntity(project);
+
+        if (project.goalId != null)
+        {
+            projectEntity = await _projectService.CreateProjectForGoalWithId((int)project.goalId, projectEntity);
+        }
+        else
+        {
+            projectEntity = await _projectService.CreateProject(projectEntity);
+        }
+        GetProjectSummaryDto projectResponseDto = _projectSummaryMapper.ToGetProjectSummaryDto(projectEntity);
+        return CreatedAtAction(nameof(ReadProjectById), new { id = projectResponseDto.Id }, projectResponseDto);
     }
 
     [HttpGet]
@@ -32,23 +49,6 @@ public class ProjectController : ControllerBase
     {
         ProjectEntity project = await _projectService.ReadProjectById(id);
         return Ok(_projectSummaryMapper.ToGetProjectDto(project));
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto project)
-    {
-        ProjectEntity projectEntity = _projectSummaryMapper.toEntity(project);
-        
-        if (project.goalId != null)
-        {
-            projectEntity = await _projectService.CreateProjectForGoalWithId((int) project.goalId, projectEntity);
-        }
-        else
-        {
-            projectEntity = await _projectService.CreateProject(projectEntity);
-        }
-        GetProjectSummaryDto projectResponseDto = _projectSummaryMapper.ToGetProjectSummaryDto(projectEntity);
-        return CreatedAtAction(nameof(ReadProjectById), new { id = projectResponseDto.Id }, projectResponseDto);
     }
 
     [HttpPut("{id}")]

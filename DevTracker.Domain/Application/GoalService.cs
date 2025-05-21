@@ -3,7 +3,7 @@ using DevTracker.Domain.InboundPorts;
 using DevTracker.Domain.Ports;
 
 namespace DevTracker.Domain.Application;
-internal class GoalService : IGoalService
+public class GoalService : IGoalService
 {
     private readonly IGoalRepository _goalRepository;
     

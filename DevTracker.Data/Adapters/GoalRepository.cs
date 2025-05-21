@@ -10,8 +10,8 @@ namespace DevTracker.Data.Adapters;
 public class GoalRepository : IGoalRepository
 {
     private readonly DevTrackerContext _context;
-    private readonly GoalMapper _goalMapper;
-    public GoalRepository(DevTrackerContext context, GoalMapper goalMapper)
+    private readonly GoalDataMapper _goalMapper;
+    public GoalRepository(DevTrackerContext context, GoalDataMapper goalMapper)
     {
         _context = context;
         _goalMapper = goalMapper;

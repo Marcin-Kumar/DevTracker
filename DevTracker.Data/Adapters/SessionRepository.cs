@@ -10,8 +10,8 @@ namespace DevTracker.Data.Adapters;
 public class SessionRepository : ISessionRepository
 {
     private readonly DevTrackerContext _context;
-    private readonly SessionMapper _sessionMapper;
-    public SessionRepository(DevTrackerContext context, SessionMapper sessionMapper)
+    private readonly SessionDataMapper _sessionMapper;
+    public SessionRepository(DevTrackerContext context, SessionDataMapper sessionMapper)
     {
         _context = context;
         _sessionMapper = sessionMapper;

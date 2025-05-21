@@ -10,9 +10,9 @@ namespace DevTracker.Data.Adapters;
 public class ProjectRepository : IProjectRepository
 {
     private readonly DevTrackerContext _context;
-    private readonly ProjectMapper _internalProjectMapper;
+    private readonly ProjectDataMapper _internalProjectMapper;
 
-    public ProjectRepository(DevTrackerContext context, ProjectMapper internalProjectMapper)
+    public ProjectRepository(DevTrackerContext context, ProjectDataMapper internalProjectMapper)
     {
         _internalProjectMapper = internalProjectMapper;
         _context = context;
