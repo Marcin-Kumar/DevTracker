@@ -1,5 +1,6 @@
-﻿using DevTracker.Domain.Entities.Enums;
-namespace DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities.Enums;
+
+namespace DevTracker.Core.Domain.Entities;
 
 public class SessionEntity
 {

@@ -1,6 +1,6 @@
-﻿using DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities;
 
-namespace DevTracker.Domain.InboundPorts;
+namespace DevTracker.Core.Application.InboundPorts;
 public interface ISessionService
 {
     public abstract Task<SessionEntity> CreateSessionForGoalWithId(int goalId, SessionEntity session);

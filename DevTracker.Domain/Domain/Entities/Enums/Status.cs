@@ -1,4 +1,4 @@
-﻿namespace DevTracker.Domain.Entities;
+﻿namespace DevTracker.Core.Domain.Entities.Enums;
 
 public enum Status
 {

@@ -1,6 +1,6 @@
-﻿using DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities;
 
-namespace DevTracker.Domain.InboundPorts;
+namespace DevTracker.Core.Application.InboundPorts;
 public interface IGoalService
 {
     public abstract Task<List<GoalEntity>> ReadAllGoals();

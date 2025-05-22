@@ -1,5 +1,5 @@
-﻿using DevTracker.Data.Models;
-using DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities;
+using DevTracker.Data.Models;
 
 namespace DevTracker.Data.Mappers;
 

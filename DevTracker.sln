@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTracker.Domain", "DevTracker.Domain\DevTracker.Domain.csproj", "{5AAAFDD9-F30E-4D8E-8642-852F11A7332D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTracker.Core", "DevTracker.Domain\DevTracker.Core.csproj", "{5AAAFDD9-F30E-4D8E-8642-852F11A7332D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTracker.API", "DevTracker.API\DevTracker.API.csproj", "{86FA49F0-7082-497A-B282-A9B45EBA334A}"
 	ProjectSection(ProjectDependencies) = postProject

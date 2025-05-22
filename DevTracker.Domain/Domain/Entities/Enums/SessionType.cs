@@ -1,4 +1,4 @@
-﻿namespace DevTracker.Domain.Entities.Enums;
+﻿namespace DevTracker.Core.Domain.Entities.Enums;
 
 public enum SessionType
 {

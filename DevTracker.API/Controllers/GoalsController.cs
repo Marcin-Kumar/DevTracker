@@ -1,7 +1,7 @@
 ﻿using DevTracker.API.Mappers;
 using DevTracker.API.Models;
-using DevTracker.Domain.Entities;
-using DevTracker.Domain.InboundPorts;
+using DevTracker.Core.Application.InboundPorts;
+using DevTracker.Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevTracker.API.Controllers;

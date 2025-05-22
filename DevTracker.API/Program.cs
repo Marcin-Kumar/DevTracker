@@ -1,9 +1,9 @@
 using DevTracker.API.Mappers;
+using DevTracker.Core.Application.Adapters;
+using DevTracker.Core.Application.InboundPorts;
 using DevTracker.Data.Adapters;
 using DevTracker.Data.Context;
 using DevTracker.Data.Mappers;
-using DevTracker.Domain.Application;
-using DevTracker.Domain.InboundPorts;
 using DevTracker.Domain.Ports;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -19,13 +19,13 @@ internal class Program
         );
 
 
-        builder.Services.AddScoped<GoalDataMapper>();
-        builder.Services.AddScoped<ProjectDataMapper>();
-        builder.Services.AddScoped<SessionDataMapper>();
+        builder.Services.AddTransient<GoalDataMapper>();
+        builder.Services.AddTransient<ProjectDataMapper>();
+        builder.Services.AddTransient<SessionDataMapper>();
 
-        builder.Services.AddScoped<GoalDtoMapper>();
-        builder.Services.AddScoped<ProjectDtoMapper>();
-        builder.Services.AddScoped<SessionDtoMapper>();
+        builder.Services.AddTransient<GoalDtoMapper>();
+        builder.Services.AddTransient<ProjectDtoMapper>();
+        builder.Services.AddTransient<SessionDtoMapper>();
 
         builder.Services.AddScoped<IGoalRepository, GoalRepository>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();

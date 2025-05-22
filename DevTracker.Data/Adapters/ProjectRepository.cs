@@ -1,7 +1,7 @@
-﻿using DevTracker.Data.Context;
+﻿using DevTracker.Core.Domain.Entities;
+using DevTracker.Data.Context;
 using DevTracker.Data.Mappers;
 using DevTracker.Data.Models;
-using DevTracker.Domain.Entities;
 using DevTracker.Domain.Ports;
 using Microsoft.EntityFrameworkCore;
 

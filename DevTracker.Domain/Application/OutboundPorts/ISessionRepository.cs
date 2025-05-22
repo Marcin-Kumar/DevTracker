@@ -1,4 +1,4 @@
-﻿using DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities;
 
 namespace DevTracker.Domain.Ports;
 public interface ISessionRepository

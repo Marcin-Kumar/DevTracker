@@ -1,4 +1,4 @@
-﻿using DevTracker.Domain.Entities.Enums;
+﻿using DevTracker.Core.Domain.Entities.Enums;
 
 namespace DevTracker.Data.Models;
 public class Session

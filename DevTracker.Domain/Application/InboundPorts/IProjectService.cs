@@ -1,6 +1,6 @@
-﻿using DevTracker.Domain.Entities;
+﻿using DevTracker.Core.Domain.Entities;
 
-namespace DevTracker.Domain.InboundPorts;
+namespace DevTracker.Core.Application.InboundPorts;
 public interface IProjectService
 {
     public abstract Task<ProjectEntity> CreateProject(ProjectEntity projectEntity);

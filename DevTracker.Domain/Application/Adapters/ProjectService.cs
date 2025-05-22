@@ -1,8 +1,8 @@
-﻿using DevTracker.Domain.Entities;
-using DevTracker.Domain.InboundPorts;
+﻿using DevTracker.Core.Application.InboundPorts;
+using DevTracker.Core.Domain.Entities;
 using DevTracker.Domain.Ports;
 
-namespace DevTracker.Domain.Application;
+namespace DevTracker.Core.Application.Adapters;
 public class ProjectService : IProjectService
 {
     private readonly IProjectRepository _projectRepository;

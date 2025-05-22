@@ -1,6 +1,6 @@
 ﻿using DevTracker.API.Models;
-using DevTracker.Domain.Entities;
-using DevTracker.Domain.Entities.Enums;
+using DevTracker.Core.Domain.Entities;
+using DevTracker.Core.Domain.Entities.Enums;
 
 namespace DevTracker.API.Mappers;
 

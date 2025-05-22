@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevTracker.Domain\DevTracker.Domain.csproj" />
+    <ProjectReference Include="..\DevTracker.Domain\DevTracker.Core.csproj" />
   </ItemGroup>
 
 </Project>
