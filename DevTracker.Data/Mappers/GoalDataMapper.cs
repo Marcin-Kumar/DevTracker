@@ -23,10 +23,10 @@ public class GoalDataMapper
             AchieveBy = g.AchieveBy,
             CreatedAt = g.CreatedAt,
             DailyTargetHours = g.DailyTargetHours,
-            Projects = g.Projects.Select(_internalProjectMapper.ToModel).ToList(),
+            Projects = g.Projects.ConvertAll(_internalProjectMapper.ToModel),
             CurrentStatus = g.CurrentStatus,
-            CodingSessions = g.CodingSessions.Select(_internalSessionMapper.ToModel).ToList(),
-            TheorySessions = g.TheorySessions.Select(_internalSessionMapper.ToModel).ToList()
+            CodingSessions = g.CodingSessions.ConvertAll(_internalSessionMapper.ToModel),
+            TheorySessions = g.TheorySessions.ConvertAll(_internalSessionMapper.ToModel)
         };
     }
 
@@ -41,10 +41,10 @@ public class GoalDataMapper
             AchieveBy = g.AchieveBy,
             CreatedAt = g.CreatedAt,
             DailyTargetHours = g.DailyTargetHours,
-            Projects = g.Projects.Select(_internalProjectMapper.ToEntity).ToList(),
+            Projects = g.Projects.ConvertAll(_internalProjectMapper.ToEntity),
             CurrentStatus = g.CurrentStatus,
-            CodingSessions = g.CodingSessions.Select(_internalSessionMapper.ToEntity).ToList(),
-            TheorySessions = g.TheorySessions.Select(_internalSessionMapper.ToEntity).ToList()
+            CodingSessions = g.CodingSessions.ConvertAll(_internalSessionMapper.ToEntity),
+            TheorySessions = g.TheorySessions.ConvertAll(_internalSessionMapper.ToEntity)
         };
     }
 }

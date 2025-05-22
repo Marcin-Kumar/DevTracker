@@ -32,7 +32,7 @@ public class GoalsController : ControllerBase
     public async Task<IActionResult> ReadAllGoalsAsSummary()
     {
         List<GoalEntity> goalEntities = await _goalService.ReadAllGoals();
-        return Ok(goalEntities.Select(_goalMapper.ToGetGoalSummaryDto).ToList());
+        return Ok(goalEntities.ConvertAll(_goalMapper.ToGetGoalSummaryDto));
     }
 
     [HttpGet("{id}")]
