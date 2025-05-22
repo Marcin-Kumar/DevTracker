@@ -11,6 +11,7 @@ public class GoalRepository : IGoalRepository
 {
     private readonly DevTrackerContext _context;
     private readonly GoalDataMapper _goalMapper;
+    
     public GoalRepository(DevTrackerContext context, GoalDataMapper goalMapper)
     {
         _context = context;
@@ -33,23 +34,27 @@ public class GoalRepository : IGoalRepository
 
     public async Task DeleteGoal(int id)
     {
-        _context.Goals.Remove(new Goal { Id = id});
+        _context.Goals.Remove(new Goal { Id = id, Title = "delete"});
         await _context.SaveChangesAsync();
     }
 
     public async Task<List<GoalEntity>> ReadAllGoals()
     {
         List<Goal> goals = await _context.Goals.AsNoTracking().ToListAsync();
-        return goals.Select(_goalMapper.ToEntity).ToList();
+        return goals.ConvertAll(_goalMapper.ToEntity).ToList();
     }
     public async Task<GoalEntity> ReadGoalById(int id)
     {
-        Goal goalModel = await _context.Goals
+        Goal? goalModel = await _context.Goals
                                     .Include(g => g.Projects)
                                     .Include(g => g.CodingSessions)
                                     .Include(g => g.TheorySessions)
                                     .Where(g => g.Id == id)
-                                    .SingleOrDefaultAsync(); 
-        return _goalMapper.ToEntity(goalModel); 
+                                    .SingleOrDefaultAsync();
+        if (goalModel is null)
+        {
+            throw new KeyNotFoundException($"Goal with ID {id} not found.");
+        }
+        return _goalMapper.ToEntity(goalModel);
     }
 }

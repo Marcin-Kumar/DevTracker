@@ -23,11 +23,11 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto project)
     {
-        ProjectEntity projectEntity = _projectSummaryMapper.toEntity(project);
+        ProjectEntity projectEntity = _projectSummaryMapper.ToEntity(project);
 
-        if (project.goalId != null)
+        if (project.GoalId is not null)
         {
-            projectEntity = await _projectService.CreateProjectForGoalWithId((int)project.goalId, projectEntity);
+            projectEntity = await _projectService.CreateProjectForGoalWithId((int)project.GoalId, projectEntity);
         }
         else
         {
@@ -41,7 +41,7 @@ public class ProjectsController : ControllerBase
     public async Task<IActionResult> ReadAllProjectSummaries()
     {
         List<ProjectEntity> projects = await _projectService.ReadAllProjects();
-        return Ok(projects.Select(_projectSummaryMapper.ToGetProjectSummaryDto).ToList());
+        return Ok(projects.ConvertAll(_projectSummaryMapper.ToGetProjectSummaryDto));
     }
 
     [HttpGet("{id}")]
@@ -55,7 +55,7 @@ public class ProjectsController : ControllerBase
     public async Task<IActionResult> UpdateProject(int id, [FromBody] UpdateProjectDto project)
     {
         ProjectEntity projectEntity = await _projectService.ReadProjectById(id);
-        projectEntity = _projectSummaryMapper.toEntity(projectEntity, project);
+        projectEntity = _projectSummaryMapper.ToEntity(projectEntity, project);
         await _projectService.UpdateProject(projectEntity);
         return NoContent();
     }

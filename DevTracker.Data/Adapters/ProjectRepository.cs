@@ -37,24 +37,28 @@ public class ProjectRepository : IProjectRepository
 
     public async Task DeleteProject(int id)
     {
-        _context.Projects.Remove(new Project { Id = id });
+        _context.Projects.Remove(new Project { Id = id , Title = "delete" });
         await _context.SaveChangesAsync();
     }
 
     public async Task<List<ProjectEntity>> ReadAllProjects()
     {
         List<Project> projectModels = await _context.Projects.AsNoTracking().ToListAsync();
-        return projectModels.Select(_internalProjectMapper.ToEntity).ToList();
+        return projectModels.ConvertAll(_internalProjectMapper.ToEntity);
     }
 
     public async Task<ProjectEntity> ReadProject(int id)
     {
-        Project project = await _context.Projects
+        Project? project = await _context.Projects
                                     .Include(p => p.CodingSessions)
                                     .Include(p => p.TheorySessions)
                                     .AsNoTracking()
                                     .Where(p => p.Id == id)
                                     .SingleOrDefaultAsync();
+        if (project is null)
+        {
+            throw new KeyNotFoundException($"Project with ID {id} not found.");
+        }
         return _internalProjectMapper.ToEntity(project);
     }
 

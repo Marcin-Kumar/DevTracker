@@ -17,11 +17,6 @@ public class GoalService : IGoalService
         return await _goalRepository.CreateGoal(goalEntity);
     }
 
-    public async Task DeleteGoal(int id)
-    {
-        await _goalRepository.DeleteGoal(id);
-    }
-
     public async Task<GoalEntity> ReadGoalById(int id)
     {
          return await _goalRepository.ReadGoalById(id);
@@ -35,5 +30,10 @@ public class GoalService : IGoalService
     public Task UpdateGoal(GoalEntity goalEntity)
     {
         return _goalRepository.UpdateGoal(goalEntity);
+    }
+
+    public async Task DeleteGoal(int id)
+    {
+        await _goalRepository.DeleteGoal(id);
     }
 }

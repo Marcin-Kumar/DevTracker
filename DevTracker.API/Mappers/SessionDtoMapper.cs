@@ -9,9 +9,9 @@ public class SessionDtoMapper
     internal GetSessionDto ToGetSessionDto(SessionEntity s)
     {
         return new GetSessionDto (
-            Id: (int)s.Id!, 
-            Type: s.Type.ToString(), 
-            Notes: s.Notes, 
+            Id: (int)s.Id!,
+            Type: s.Type.ToString(),
+            Notes: s.Notes,
             Title: s.Title,
             StartedAtDateTime: s.StartedAtDateTime,
             EndedAtDateTime: s.EndedAtDateTime
@@ -20,24 +20,22 @@ public class SessionDtoMapper
 
     internal SessionEntity ToEntity(CreateSessionDto s)
     {
-        SessionType sessionType;
-        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out sessionType);
+        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out SessionType sessionType);
         return new SessionEntity {
             Type = sessionType,
             Title = s.Title,
             Notes = s.Notes,
             StartedAtDateTime = s.StartedAtDateTime,
-            EndedAtDateTime = s.EndedAtDateTime 
+            EndedAtDateTime = s.EndedAtDateTime
         };
     }
 
     internal SessionEntity ToEntity(SessionEntity e, UpdateSessionDto s)
     {
-        SessionType sessionType;
-        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out sessionType);
+        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out SessionType sessionType);
         return new SessionEntity {
             Id = e.Id,
-            Type = s.Type != null ? sessionType : e.Type,
+            Type = s.Type is not null ? sessionType : e.Type,
             Title = s.Title ?? e.Title,
             Notes = s.Notes ?? e.Notes,
             StartedAtDateTime = s.StartedAtDateTime ?? e.StartedAtDateTime,

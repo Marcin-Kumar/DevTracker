@@ -20,38 +20,42 @@ public class SessionRepository : ISessionRepository
     public async Task<SessionEntity> CreateSession(SessionEntity session)
     {
         Session sessionModel = _sessionMapper.ToModel(session);
-        await _context.Sessions.AddAsync(sessionModel); 
+        await _context.Sessions.AddAsync(sessionModel);
         await _context.SaveChangesAsync();
         return _sessionMapper.ToEntity(sessionModel);
     }
 
     public async Task DeleteSession(int id)
     {
-        _context.Sessions.Remove(new Session { Id = id });
+        _context.Sessions.Remove(new Session { Id = id, Title = "delete" });
         await _context.SaveChangesAsync();
     }
 
     public async Task<List<SessionEntity>> ReadAllCodingSessions()
     {
         List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Coding).ToListAsync();
-        return sessionModels.Select(_sessionMapper.ToEntity).ToList();
+        return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
     public async Task<List<SessionEntity>> ReadAllSessions()
     {
         List<Session> sessionModels = await _context.Sessions.ToListAsync();
-        return sessionModels.Select(_sessionMapper.ToEntity).ToList();
+        return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
     public async Task<List<SessionEntity>> ReadAllTheorySessions()
     {
         List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Theory).ToListAsync();
-        return sessionModels.Select(_sessionMapper.ToEntity).ToList();
+        return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
     public async Task<SessionEntity> ReadSessionWithId(int id)
     {
-        Session sessionModel = await _context.Sessions.FindAsync(id);
+        Session? sessionModel = await _context.Sessions.FindAsync(id);
+        if (sessionModel is null)
+        {
+            throw new KeyNotFoundException($"Session with ID {id} not found.");
+        }
         return _sessionMapper.ToEntity(sessionModel);
     }
 

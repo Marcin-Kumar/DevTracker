@@ -26,15 +26,15 @@ public class SessionsController : ControllerBase
     {
         SessionEntity sessionEntity = _sessionMapper.ToEntity(session);
 
-        if ((session.GoalId == null && session.ProjectId == null) || (session.GoalId != null && session.ProjectId != null))
+        if ((session.GoalId is null && session.ProjectId is null) || (session.GoalId is not null && session.ProjectId is not null))
         {
             return BadRequest("Provide the correct GoalId or ProjectId.");
         }
-        if (session.GoalId != null)
+        if (session.GoalId is not null)
         {
             sessionEntity = await _sessionService.CreateSessionForGoalWithId((int)session.GoalId, sessionEntity);
         }
-        else if (session.ProjectId != null)
+        else if (session.ProjectId is not null)
         {
             sessionEntity = await _sessionService.CreateSessionForProjectWithId((int)session.ProjectId, sessionEntity);
         }
@@ -47,15 +47,14 @@ public class SessionsController : ControllerBase
     public async Task<IActionResult> ReadAllSessions()
     {
         List<SessionEntity> sessions = await _sessionService.ReadAllSessions();
-        return Ok(sessions.Select(_sessionMapper.ToGetSessionDto).ToList()); 
+        return Ok(sessions.ConvertAll(_sessionMapper.ToGetSessionDto));
     }
 
     [HttpGet("by-type")]
     public async Task<IActionResult> ReadSessionsByType([FromQuery] string sessionType)
     {
         List<SessionEntity> sessions;
-        SessionType type;
-        Enum.TryParse<SessionType>(sessionType, ignoreCase: true, out type);
+        Enum.TryParse<SessionType>(sessionType, ignoreCase: true, out SessionType type);
         if (SessionType.Theory.Equals(type))
         {
             sessions = await _sessionService.ReadAllTheorySessions();
@@ -67,7 +66,7 @@ public class SessionsController : ControllerBase
         {
             return BadRequest("Invalid session type.");
         }
-        return Ok(sessions.Select(_sessionMapper.ToGetSessionDto).ToList()); 
+        return Ok(sessions.ConvertAll(_sessionMapper.ToGetSessionDto));
     }
 
     [HttpGet("{id}")]
@@ -79,7 +78,7 @@ public class SessionsController : ControllerBase
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSession(int id, [FromBody] UpdateSessionDto session)
-    { 
+    {
         SessionEntity sessionEntity = await _sessionService.ReadSessionWithId(id);
         sessionEntity = _sessionMapper.ToEntity(sessionEntity, session);
         await _sessionService.UpdateSession(sessionEntity);

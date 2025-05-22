@@ -30,12 +30,6 @@ public class SessionService : ISessionService
         return await _sessionRepository.CreateSession(session);
     }
 
-
-    public async Task DeleteSession(int id)
-    {
-        await _sessionRepository.DeleteSession(id);
-    }
-
     public async Task<List<SessionEntity>> ReadAllSessions()
     {
         return await _sessionRepository.ReadAllSessions();
@@ -59,5 +53,9 @@ public class SessionService : ISessionService
     public async Task UpdateSession(SessionEntity session)
     {
         await _sessionRepository.UpdateSession(session);
+    }
+    public async Task DeleteSession(int id)
+    {
+        await _sessionRepository.DeleteSession(id);
     }
 }

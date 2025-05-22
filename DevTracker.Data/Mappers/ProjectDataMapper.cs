@@ -20,8 +20,8 @@ public class ProjectDataMapper
             Title = p.Title,
             Description = p.Description,
             CurrentStatus = p.CurrentStatus,
-            CodingSessions = p.CodingSessions?.Select(_sessionMapper.ToModel).ToList(),
-            TheorySessions = p.TheorySessions?.Select(_sessionMapper.ToModel).ToList(),
+            CodingSessions = p.CodingSessions.ConvertAll(_sessionMapper.ToModel),
+            TheorySessions = p.TheorySessions.ConvertAll(_sessionMapper.ToModel),
         };
     }
 
@@ -33,8 +33,8 @@ public class ProjectDataMapper
             Title = p.Title,
             Description = p.Description,
             CurrentStatus = p.CurrentStatus,
-            CodingSessions = p.CodingSessions?.Select(_sessionMapper.ToEntity).ToList(),
-            TheorySessions = p.TheorySessions?.Select(_sessionMapper.ToEntity).ToList(),
+            CodingSessions = p.CodingSessions.ConvertAll(_sessionMapper.ToEntity),
+            TheorySessions = p.TheorySessions.ConvertAll(_sessionMapper.ToEntity),
         };
     }
 }

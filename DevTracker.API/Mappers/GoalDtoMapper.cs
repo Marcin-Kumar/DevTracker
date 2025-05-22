@@ -17,9 +17,9 @@ public class GoalDtoMapper
     internal GetGoalDto ToGetGoalDto(GoalEntity g) => new GetGoalDto
     (
         summary: ToGetGoalSummaryDto(g),
-        Projects: g.Projects?.Select(_projectMapper.ToGetProjectDto).ToList() ?? [],
-        CodingSessions: g.CodingSessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>(),
-        TheorySessions: g.TheorySessions?.Select(_sessionMapper.ToGetSessionDto).ToList() ?? new List<GetSessionDto>()
+        Projects: g.Projects.ConvertAll(_projectMapper.ToGetProjectDto),
+        CodingSessions: g.CodingSessions.ConvertAll(_sessionMapper.ToGetSessionDto),
+        TheorySessions: g.TheorySessions.ConvertAll(_sessionMapper.ToGetSessionDto)
     );
 
     internal GetGoalSummaryDto ToGetGoalSummaryDto(GoalEntity g) => new GetGoalSummaryDto
@@ -27,19 +27,16 @@ public class GoalDtoMapper
         Id: (int)g.Id!,
         Title: g.Title,
         Description: g.Description,
-        AchieveBy: g.AchieveBy,
         CreatedAt: g.CreatedAt,
+        AchieveBy: g.AchieveBy,
+        Notes: g.Notes,
         CurrentStatus: g.CurrentStatus.ToString(),
-        DailyTargetHours: g.DailyTargetHours,
-        Notes: g.Notes
+        DailyTargetHours: g.DailyTargetHours
     );
 
-
-    internal GoalEntity toEntity(CreateGoalDto g)
+    internal GoalEntity ToEntity(CreateGoalDto g)
     {
-
-        Status status;
-        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out status);
+        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out Status status);
         return new GoalEntity
         {
             Title = g.Title,
@@ -52,10 +49,9 @@ public class GoalDtoMapper
         };
     }
 
-    internal GoalEntity toEntity(GoalEntity e, UpdateGoalDto g)
+    internal GoalEntity ToEntity(GoalEntity e, UpdateGoalDto g)
     {
-        Status status;
-        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out status);
+        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out Status status);
         return new GoalEntity
         {
             Id = e.Id,
@@ -64,7 +60,7 @@ public class GoalDtoMapper
             CreatedAt = g.CreatedAt ?? e.CreatedAt,
             AchieveBy = g.AchieveBy ?? e.AchieveBy,
             Notes = g.Notes ?? e.Notes,
-            CurrentStatus = g.CurrentStatus == null ? e.CurrentStatus : status,
+            CurrentStatus = g.CurrentStatus is null ? e.CurrentStatus : status,
             DailyTargetHours = g.DailyTargetHours ?? e.DailyTargetHours,
         };
     }

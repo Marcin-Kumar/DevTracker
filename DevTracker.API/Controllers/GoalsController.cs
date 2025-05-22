@@ -22,7 +22,7 @@ public class GoalsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateGoal([FromBody] CreateGoalDto goal)
     {
-        GoalEntity goalEntity = _goalMapper.toEntity(goal);
+        GoalEntity goalEntity = _goalMapper.ToEntity(goal);
         goalEntity = await _goalService.CreateGoal(goalEntity);
         GetGoalSummaryDto goalResponseDto = _goalMapper.ToGetGoalSummaryDto(goalEntity);
         return CreatedAtAction(nameof(ReadGoalById), new { id = goalResponseDto.Id }, goalResponseDto);
@@ -46,7 +46,7 @@ public class GoalsController : ControllerBase
     public async Task<IActionResult> UpdateGoal(int id, [FromBody] UpdateGoalDto goal)
     {
         GoalEntity goalEntity = await _goalService.ReadGoalById(id);
-        goalEntity = _goalMapper.toEntity(goalEntity, goal);
+        goalEntity = _goalMapper.ToEntity(goalEntity, goal);
         await _goalService.UpdateGoal(goalEntity);
         return NoContent();
     }

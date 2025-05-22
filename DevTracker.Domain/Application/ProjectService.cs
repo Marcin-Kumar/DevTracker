@@ -21,11 +21,6 @@ public class ProjectService : IProjectService
         return await _projectRepository.CreateProjectForGoalWithId(goalId, projectEntity);
     }
 
-    public async Task DeleteProject(int id)
-    {
-        await _projectRepository.DeleteProject(id);
-    }
-
     public async Task<List<ProjectEntity>> ReadAllProjects()
     {
         return await _projectRepository.ReadAllProjects();
@@ -39,5 +34,9 @@ public class ProjectService : IProjectService
     public async Task UpdateProject(ProjectEntity projectEntity)
     {
        await _projectRepository.UpdateProject(projectEntity);
+    }
+    public async Task DeleteProject(int id)
+    {
+        await _projectRepository.DeleteProject(id);
     }
 }
