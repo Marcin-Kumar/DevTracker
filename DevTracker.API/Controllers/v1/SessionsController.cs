@@ -1,4 +1,4 @@
-﻿namespace DevTracker.API.Controllers;
+﻿namespace DevTracker.API.Controllers.v1;
 
 using DevTracker.API.Mappers;
 using DevTracker.API.Models;
@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 public class SessionsController : ControllerBase
 {
     private readonly ISessionService _sessionService;
@@ -26,7 +27,7 @@ public class SessionsController : ControllerBase
     {
         SessionEntity sessionEntity = _sessionMapper.ToEntity(session);
 
-        if ((session.GoalId is null && session.ProjectId is null) || (session.GoalId is not null && session.ProjectId is not null))
+        if (session.GoalId is null && session.ProjectId is null || session.GoalId is not null && session.ProjectId is not null)
         {
             return BadRequest("Provide the correct GoalId or ProjectId.");
         }
@@ -54,7 +55,7 @@ public class SessionsController : ControllerBase
     public async Task<IActionResult> ReadSessionsByType([FromQuery] string sessionType)
     {
         List<SessionEntity> sessions;
-        Enum.TryParse<SessionType>(sessionType, ignoreCase: true, out SessionType type);
+        Enum.TryParse(sessionType, ignoreCase: true, out SessionType type);
         if (SessionType.Theory.Equals(type))
         {
             sessions = await _sessionService.ReadAllTheorySessions();

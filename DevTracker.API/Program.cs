@@ -1,9 +1,7 @@
 using DevTracker.API.Setup;
+using DevTracker.API.Setup.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Scalar.AspNetCore;
 using Serilog;
-using Serilog.Context;
 
 internal class Program
 {
@@ -20,20 +18,9 @@ internal class Program
         }
 
         builder.Services.ConfigureDependencyInjection(connectionString);
-        builder.Services.AddControllers();
-        builder.Services.AddOpenApi();
         Log.Information("Building DevTracker API and configuring middleware...");
         var app = builder.Build();
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.MapScalarApiReference(option => option.Theme = ScalarTheme.BluePlanet);
-        }
-
-        app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.MapControllers();
+        app.ConfigureMiddlewarePipeline();
         Log.Information("Starting DevTracker API...");
         app.Run();
     }

@@ -1,4 +1,4 @@
-﻿namespace DevTracker.API.Controllers;
+﻿namespace DevTracker.API.Controllers.v1;
 
 using DevTracker.API.Mappers;
 using DevTracker.API.Models;
@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectService _projectService;

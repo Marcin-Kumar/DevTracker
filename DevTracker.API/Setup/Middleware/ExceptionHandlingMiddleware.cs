@@ -1,7 +1,7 @@
 ﻿using DevTracker.Core.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevTracker.API.Setup;
+namespace DevTracker.API.Setup.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
