@@ -1,4 +1,5 @@
-﻿using DevTracker.Core.Domain.Entities;
+﻿using DevTracker.Core.Application.Exceptions;
+using DevTracker.Core.Domain.Entities;
 using DevTracker.Data.Context;
 using DevTracker.Data.Mappers;
 using DevTracker.Data.Models;
@@ -53,7 +54,7 @@ public class GoalRepository : IGoalRepository
                                     .SingleOrDefaultAsync();
         if (goalModel is null)
         {
-            throw new KeyNotFoundException($"Goal with ID {id} not found.");
+            throw new NotFoundException($"Goal with ID {id} not found.");
         }
         return _goalMapper.ToEntity(goalModel);
     }

@@ -58,7 +58,7 @@ namespace DevTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Goals");
+                    b.ToTable("Goals", (string)null);
                 });
 
             modelBuilder.Entity("DevTracker.Data.Models.Project", b =>
@@ -89,7 +89,7 @@ namespace DevTracker.Data.Migrations
 
                     b.HasIndex("GoalId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("DevTracker.Data.Models.Session", b =>
@@ -141,7 +141,7 @@ namespace DevTracker.Data.Migrations
 
                     b.HasIndex("ProjectTheorySessionId");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Sessions", (string)null);
                 });
 
             modelBuilder.Entity("DevTracker.Data.Models.Project", b =>

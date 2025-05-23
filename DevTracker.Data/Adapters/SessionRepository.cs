@@ -1,4 +1,5 @@
-﻿using DevTracker.Core.Domain.Entities;
+﻿using DevTracker.Core.Application.Exceptions;
+using DevTracker.Core.Domain.Entities;
 using DevTracker.Core.Domain.Entities.Enums;
 using DevTracker.Data.Context;
 using DevTracker.Data.Mappers;
@@ -33,19 +34,19 @@ public class SessionRepository : ISessionRepository
 
     public async Task<List<SessionEntity>> ReadAllCodingSessions()
     {
-        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Coding).ToListAsync();
+        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Coding).AsNoTracking().ToListAsync();
         return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
     public async Task<List<SessionEntity>> ReadAllSessions()
     {
-        List<Session> sessionModels = await _context.Sessions.ToListAsync();
+        List<Session> sessionModels = await _context.Sessions.AsNoTracking().ToListAsync();
         return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
     public async Task<List<SessionEntity>> ReadAllTheorySessions()
     {
-        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Theory).ToListAsync();
+        List<Session> sessionModels = await _context.Sessions.Where(s => s.Type == SessionType.Theory).AsNoTracking().ToListAsync();
         return sessionModels.ConvertAll(_sessionMapper.ToEntity);
     }
 
@@ -54,7 +55,7 @@ public class SessionRepository : ISessionRepository
         Session? sessionModel = await _context.Sessions.FindAsync(id);
         if (sessionModel is null)
         {
-            throw new KeyNotFoundException($"Session with ID {id} not found.");
+            throw new NotFoundException($"Session with ID {id} not found.");
         }
         return _sessionMapper.ToEntity(sessionModel);
     }

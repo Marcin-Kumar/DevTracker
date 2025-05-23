@@ -39,7 +39,7 @@ public class GoalsController : ControllerBase
     public async Task<IActionResult> ReadGoalById(int id)
     {
         GoalEntity goalEntity = await _goalService.ReadGoalById(id);
-        return Ok(_goalMapper.ToGetGoalDto(goalEntity)); 
+        return Ok(_goalMapper.ToGetGoalDto(goalEntity));
     }
 
     [HttpPut("{id}")]

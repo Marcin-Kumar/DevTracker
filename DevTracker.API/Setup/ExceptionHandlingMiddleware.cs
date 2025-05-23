@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DevTracker.Core.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevTracker.API.Setup;
 
@@ -21,17 +22,27 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred while processing the request.");
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "application/json";
-            ProblemDetails problemDetails = new ProblemDetails
-            {
-                Title = "An internal server error occurred while processing your request.",
-                Status = StatusCodes.Status500InternalServerError,
-                Detail = ex.Message,
-                Instance = context.Request.Path
-            };
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            await HandleExceptionAsync(context, ex);
         }
+    }
+
+    private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+    {
+        _logger.LogError(ex, "An exception occurred while processing the request.");
+        var (statusCode, title) = ex switch
+        {
+            NotFoundException => (StatusCodes.Status404NotFound, "Resource not found"),
+            _ => (StatusCodes.Status500InternalServerError, "An internal server error occurred while processing your request.")
+        };
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/json";
+        ProblemDetails problemDetails = new ProblemDetails
+        {
+            Title = title,
+            Status = statusCode,
+            Detail = ex.Message,
+            Instance = context.Request.Path
+        };
+        await context.Response.WriteAsJsonAsync(problemDetails);
     }
 }

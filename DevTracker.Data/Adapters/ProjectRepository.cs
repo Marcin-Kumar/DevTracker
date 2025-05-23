@@ -1,4 +1,5 @@
-﻿using DevTracker.Core.Domain.Entities;
+﻿using DevTracker.Core.Application.Exceptions;
+using DevTracker.Core.Domain.Entities;
 using DevTracker.Data.Context;
 using DevTracker.Data.Mappers;
 using DevTracker.Data.Models;
@@ -52,12 +53,11 @@ public class ProjectRepository : IProjectRepository
         Project? project = await _context.Projects
                                     .Include(p => p.CodingSessions)
                                     .Include(p => p.TheorySessions)
-                                    .AsNoTracking()
                                     .Where(p => p.Id == id)
                                     .SingleOrDefaultAsync();
         if (project is null)
         {
-            throw new KeyNotFoundException($"Project with ID {id} not found.");
+            throw new NotFoundException($"Project with ID {id} not found.");
         }
         return _internalProjectMapper.ToEntity(project);
     }
