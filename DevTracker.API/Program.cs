@@ -1,44 +1,30 @@
-using DevTracker.API.Mappers;
-using DevTracker.Core.Application.Adapters;
-using DevTracker.Core.Application.InboundPorts;
-using DevTracker.Data.Adapters;
-using DevTracker.Data.Context;
-using DevTracker.Data.Mappers;
-using DevTracker.Domain.Ports;
+using DevTracker.API.Setup;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using Serilog;
+using Serilog.Context;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddDbContext<DevTrackerContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-            sqloptions => sqloptions.MigrationsAssembly("DevTracker.Data"))
-        );
+        builder.ConfigureLogger();
+        string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+        if(string.IsNullOrWhiteSpace(connectionString))
+        {
+            Log.Fatal("Connection string 'DefaultConnection' is missing or empty. Shutting down");
+            return;
+        }
 
-        builder.Services.AddTransient<GoalDataMapper>();
-        builder.Services.AddTransient<ProjectDataMapper>();
-        builder.Services.AddTransient<SessionDataMapper>();
-
-        builder.Services.AddTransient<GoalDtoMapper>();
-        builder.Services.AddTransient<ProjectDtoMapper>();
-        builder.Services.AddTransient<SessionDtoMapper>();
-
-        builder.Services.AddScoped<IGoalRepository, GoalRepository>();
-        builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-        builder.Services.AddScoped<ISessionRepository, SessionRepository>();
-
-        builder.Services.AddScoped<IGoalService, GoalService>();
-        builder.Services.AddScoped<IProjectService, ProjectService>();
-        builder.Services.AddScoped<ISessionService, SessionService>();
-
-
+        builder.Services.ConfigureDependencyInjection(connectionString);
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
+        Log.Information("Building DevTracker API and configuring middleware...");
         var app = builder.Build();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
@@ -48,6 +34,7 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        Log.Information("Starting DevTracker API...");
         app.Run();
     }
 }
