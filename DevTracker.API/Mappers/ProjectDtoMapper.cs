@@ -25,29 +25,27 @@ public class ProjectDtoMapper
         Id: (int)p.Id!,
         Title: p.Title,
         Description: p.Description,
-        CurrentStatus: p.CurrentStatus.ToString()
+        CurrentStatus: p.CurrentStatus
     );
 
     internal ProjectEntity ToEntity(CreateProjectDto p)
     {
-        Enum.TryParse<Status>(p.CurrentStatus, ignoreCase: true, out Status status);
         return new ProjectEntity
         {
             Title = p.Title,
             Description = p.Description,
-            CurrentStatus = status,
+            CurrentStatus = p.CurrentStatus,
         };
     }
 
     internal ProjectEntity ToEntity(ProjectEntity e, UpdateProjectDto p)
     {
-        Enum.TryParse<Status>(p.CurrentStatus, ignoreCase: true, out Status status);
         return new ProjectEntity
         {
             Id = e.Id,
             Title = p.Title ?? e.Title,
             Description = p.Description ?? e.Description,
-            CurrentStatus = p.CurrentStatus is null ? e.CurrentStatus : status,
+            CurrentStatus = p.CurrentStatus ?? e.CurrentStatus,
         };
     }
 }

@@ -1,3 +1,5 @@
+namespace DevTracker.API;
+
 using DevTracker.API.Setup;
 using DevTracker.API.Setup.Middleware;
 using Microsoft.EntityFrameworkCore;

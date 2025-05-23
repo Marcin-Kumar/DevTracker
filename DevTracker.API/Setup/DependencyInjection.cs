@@ -8,6 +8,7 @@ using DevTracker.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace DevTracker.API.Setup;
 
@@ -37,7 +38,10 @@ public static class DependencyInjection
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<ISessionService, SessionService>();
 
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
+        });
         services.AddOpenApi();
         services.AddApiVersioning(option =>
         {

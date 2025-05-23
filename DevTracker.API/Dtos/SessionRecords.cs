@@ -1,5 +1,8 @@
-﻿namespace DevTracker.API.Models;
+﻿using DevTracker.Core.Domain.Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 
-public record CreateSessionDto(int? GoalId, int? ProjectId, string Type, string? Notes, string Title, DateTime StartedAtDateTime, DateTime? EndedAtDateTime);
-public record GetSessionDto(int Id, string Type, string? Notes, string Title, DateTime StartedAtDateTime, DateTime? EndedAtDateTime);
-public record UpdateSessionDto(string? Type, string? Notes, string? Title, DateTime? StartedAtDateTime, DateTime? EndedAtDateTime);
+namespace DevTracker.API.Models;
+
+public record CreateSessionDto(int? GoalId, int? ProjectId, SessionType Type, [StringLength(300)] string? Notes,[StringLength(100, MinimumLength = 3)] string Title, DateTime StartedAtDateTime, DateTime? EndedAtDateTime);
+public record GetSessionDto(int Id, SessionType Type, string? Notes, string Title, DateTime StartedAtDateTime, DateTime? EndedAtDateTime);
+public record UpdateSessionDto(SessionType? Type, [StringLength(300)] string? Notes,[StringLength(100, MinimumLength = 3)] string? Title, DateTime? StartedAtDateTime, DateTime? EndedAtDateTime);

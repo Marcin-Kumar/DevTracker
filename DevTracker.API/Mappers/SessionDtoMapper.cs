@@ -1,6 +1,5 @@
 ﻿using DevTracker.API.Models;
 using DevTracker.Core.Domain.Entities;
-using DevTracker.Core.Domain.Entities.Enums;
 
 namespace DevTracker.API.Mappers;
 
@@ -10,7 +9,7 @@ public class SessionDtoMapper
     {
         return new GetSessionDto (
             Id: (int)s.Id!,
-            Type: s.Type.ToString(),
+            Type: s.Type,
             Notes: s.Notes,
             Title: s.Title,
             StartedAtDateTime: s.StartedAtDateTime,
@@ -20,9 +19,8 @@ public class SessionDtoMapper
 
     internal SessionEntity ToEntity(CreateSessionDto s)
     {
-        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out SessionType sessionType);
         return new SessionEntity {
-            Type = sessionType,
+            Type = s.Type,
             Title = s.Title,
             Notes = s.Notes,
             StartedAtDateTime = s.StartedAtDateTime,
@@ -32,10 +30,9 @@ public class SessionDtoMapper
 
     internal SessionEntity ToEntity(SessionEntity e, UpdateSessionDto s)
     {
-        Enum.TryParse<SessionType>(s.Type, ignoreCase: true, out SessionType sessionType);
         return new SessionEntity {
             Id = e.Id,
-            Type = s.Type is not null ? sessionType : e.Type,
+            Type = s.Type ?? e.Type,
             Title = s.Title ?? e.Title,
             Notes = s.Notes ?? e.Notes,
             StartedAtDateTime = s.StartedAtDateTime ?? e.StartedAtDateTime,

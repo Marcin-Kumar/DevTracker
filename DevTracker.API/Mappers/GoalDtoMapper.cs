@@ -31,13 +31,12 @@ public class GoalDtoMapper
         CreatedAt: g.CreatedAt,
         AchieveBy: g.AchieveBy,
         Notes: g.Notes,
-        CurrentStatus: g.CurrentStatus.ToString(),
+        CurrentStatus: g.CurrentStatus,
         DailyTargetHours: g.DailyTargetHours
     );
 
     internal GoalEntity ToEntity(CreateGoalDto g)
     {
-        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out Status status);
         return new GoalEntity
         {
             Title = g.Title,
@@ -45,14 +44,13 @@ public class GoalDtoMapper
             CreatedAt = g.CreatedAt,
             AchieveBy = g.AchieveBy,
             Notes = g.Notes,
-            CurrentStatus = status,
+            CurrentStatus = g.CurrentStatus,
             DailyTargetHours = g.DailyTargetHours,
         };
     }
 
     internal GoalEntity ToEntity(GoalEntity e, UpdateGoalDto g)
     {
-        Enum.TryParse<Status>(g.CurrentStatus, ignoreCase: true, out Status status);
         return new GoalEntity
         {
             Id = e.Id,
@@ -61,7 +59,7 @@ public class GoalDtoMapper
             CreatedAt = g.CreatedAt ?? e.CreatedAt,
             AchieveBy = g.AchieveBy ?? e.AchieveBy,
             Notes = g.Notes ?? e.Notes,
-            CurrentStatus = g.CurrentStatus is null ? e.CurrentStatus : status,
+            CurrentStatus = g.CurrentStatus ?? e.CurrentStatus,
             DailyTargetHours = g.DailyTargetHours ?? e.DailyTargetHours,
         };
     }
