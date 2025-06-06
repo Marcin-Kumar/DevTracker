@@ -4,12 +4,14 @@ using DevTracker.API.Mappers;
 using DevTracker.API.Models;
 using DevTracker.Core.Application.InboundPorts;
 using DevTracker.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
+[Authorize]
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectService _projectService;

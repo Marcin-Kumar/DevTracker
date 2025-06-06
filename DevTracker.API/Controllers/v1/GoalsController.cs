@@ -2,6 +2,7 @@
 using DevTracker.API.Models;
 using DevTracker.Core.Application.InboundPorts;
 using DevTracker.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevTracker.API.Controllers.v1;
@@ -9,6 +10,7 @@ namespace DevTracker.API.Controllers.v1;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
+[Authorize]
 public class GoalsController : ControllerBase
 {
     private readonly IGoalService _goalService;

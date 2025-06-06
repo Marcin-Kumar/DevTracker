@@ -5,12 +5,15 @@ using DevTracker.API.Models;
 using DevTracker.Core.Application.InboundPorts;
 using DevTracker.Core.Domain.Entities;
 using DevTracker.Core.Domain.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
+[Authorize]
+
 public class SessionsController : ControllerBase
 {
     private readonly ISessionService _sessionService;
