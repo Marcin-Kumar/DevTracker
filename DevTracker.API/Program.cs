@@ -2,7 +2,6 @@ namespace DevTracker.API;
 
 using DevTracker.API.Setup;
 using DevTracker.API.Setup.Middleware;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 internal class Program
@@ -11,15 +10,9 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.ConfigureLogger();
-        string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        
 
-        if(string.IsNullOrWhiteSpace(connectionString))
-        {
-            Log.Fatal("Connection string 'DefaultConnection' is missing or empty. Shutting down");
-            return;
-        }
-
-        builder.Services.ConfigureDependencyInjection(connectionString);
+        builder.Services.ConfigureDependencyInjection(builder.Configuration);
         Log.Information("Building DevTracker API and configuring middleware...");
         var app = builder.Build();
         app.ConfigureMiddlewarePipeline();

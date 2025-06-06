@@ -14,6 +14,7 @@ public static class MiddlewarePipeline
         }
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
     }
