@@ -16,7 +16,7 @@ namespace DevTracker.API.Controllers.v1;
 public class LoginController : ControllerBase
 {
     private readonly ILoginService _loginService;
-    protected LoginController(ILoginService loginService)
+    public LoginController(ILoginService loginService)
     {
         _loginService = loginService;
     }

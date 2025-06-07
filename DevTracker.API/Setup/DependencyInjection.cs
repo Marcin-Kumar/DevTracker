@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using System.Text;
@@ -60,6 +62,28 @@ public static class DependencyInjection
         services.AddSwaggerGen(options =>
         {
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+            options.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme { 
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Description = "JWT Authorization header using the Bearer scheme.",
+                In = ParameterLocation.Header,
+            });
+            //TODO: Remove global security requirement and add a custom operation filter to omit LoginController
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                         Reference = new OpenApiReference
+                         {
+                            Id = "BearerAuth",
+                            Type = ReferenceType.SecurityScheme
+                         }
+                    },
+                    Array.Empty<string>()
+                }
+            });
         });
 
         services.AddApiVersioning(option =>
