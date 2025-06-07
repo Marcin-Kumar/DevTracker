@@ -9,8 +9,11 @@ public static class MiddlewarePipeline
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
-            app.MapScalarApiReference(option => option.Theme = ScalarTheme.BluePlanet);
+            app.UseSwagger(options => options.RouteTemplate = "/openapi/{documentName}.json");
+            app.MapScalarApiReference(option =>
+            {
+                option.Theme = ScalarTheme.BluePlanet;
+            });
         }
 
         app.UseHttpsRedirection();

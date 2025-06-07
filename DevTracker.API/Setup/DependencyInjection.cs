@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -55,7 +56,12 @@ public static class DependencyInjection
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
         });
-        services.AddOpenApi();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
+        {
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        });
+
         services.AddApiVersioning(option =>
         {
             option.AssumeDefaultVersionWhenUnspecified = true;

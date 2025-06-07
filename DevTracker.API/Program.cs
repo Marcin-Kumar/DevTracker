@@ -10,8 +10,6 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.ConfigureLogger();
-        
-
         builder.Services.ConfigureDependencyInjection(builder.Configuration);
         Log.Information("Building DevTracker API and configuring middleware...");
         var app = builder.Build();

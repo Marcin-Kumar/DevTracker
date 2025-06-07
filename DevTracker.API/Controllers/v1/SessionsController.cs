@@ -9,11 +9,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+/// <summary>
+/// API controller for managing developer sessions.
+/// </summary>
+/// <remarks>
+/// Sessions can be either coding or theoretical and must be associated with either a goal or a project.
+/// </remarks>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [Authorize]
-
 public class SessionsController : ControllerBase
 {
     private readonly ISessionService _sessionService;
@@ -25,6 +30,14 @@ public class SessionsController : ControllerBase
         _sessionMapper = sessionMapper;
     }
 
+    /// <summary>
+    /// Creates a new session for a goal or a project.
+    /// </summary>
+    /// <param name="session">The session to create.</param>
+    /// <returns>The created session.</returns>
+    [HttpPost]
+    [ProducesResponseType(typeof(GetSessionDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
     public async Task<IActionResult> CreateSession([FromBody] CreateSessionDto session)
     {
@@ -47,14 +60,26 @@ public class SessionsController : ControllerBase
         return CreatedAtAction(nameof(ReadSessionById), new { id = responseDto.Id }, responseDto);
     }
 
+    /// <summary>
+    /// Retrieves all sessions.
+    /// </summary>
+    /// <returns>A list of all sessions.</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(List<GetSessionDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ReadAllSessions()
     {
         List<SessionEntity> sessions = await _sessionService.ReadAllSessions();
         return Ok(sessions.ConvertAll(_sessionMapper.ToGetSessionDto));
     }
 
+    /// <summary>
+    /// Retrieves sessions by type (Theory or Coding).
+    /// </summary>
+    /// <param name="sessionType">The type of session to filter by (e.g., Theory, Coding).</param>
+    /// <returns>A list of sessions matching the type.</returns>
     [HttpGet("by-type")]
+    [ProducesResponseType(typeof(IEnumerable<GetSessionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ReadSessionsByType([FromQuery] string sessionType)
     {
         List<SessionEntity> sessions;
@@ -73,14 +98,29 @@ public class SessionsController : ControllerBase
         return Ok(sessions.ConvertAll(_sessionMapper.ToGetSessionDto));
     }
 
+    /// <summary>
+    /// Retrieves a session by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the session.</param>
+    /// <returns>The session with the given ID.</returns>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(GetSessionDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ReadSessionById(int id)
     {
         SessionEntity session = await _sessionService.ReadSessionWithId(id);
         return Ok(_sessionMapper.ToGetSessionDto(session));
     }
 
+    /// <summary>
+    /// Updates a session by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the session to update.</param>
+    /// <param name="session">The updated session data.</param>
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateSession(int id, [FromBody] UpdateSessionDto session)
     {
         SessionEntity sessionEntity = await _sessionService.ReadSessionWithId(id);
@@ -89,7 +129,13 @@ public class SessionsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Deletes a session by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the session to delete.</param>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSession(int id)
     {
         await _sessionService.DeleteSession(id);
